@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Spring Boot JPA Example</title>
+    <link href="source/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <script src="source/jquery/jquery.min.js"></script>
+    <script src="source/bootstrap/js/bootstrap.js"></script>
+    <script src="source/jquery/my_canvas.js"></script>
+    <style>
+        .row div {
+            padding:10px 10px ;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2 style="padding:25px 0px 10px 0px">Student Basic Information</h2>
+
+    <form action="save" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" class="form-control" required name="roll" placeholder="Enter Roll No.">
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" required name="name" placeholder="Enter Student Name">
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" required name="address" placeholder="Enter Address">
+            </div>
+            <div class="col-md-6">
+                <select type="text" class="form-control" placeholder="Enter Department" name="dept">
+                    <option> ICT </option>
+                    <option> CSE </option>
+                    <option> TE </option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" style="width:100px; margin:10px 0px" class="btn btn-primary"> <i class="fa fa-plus" aria-hidden="true"></i>  Save </button>
+        <button  type="reset" style="width:100px; margin:10px 0px" class="btn btn-warning"><i class="fa fa-times" aria-hidden="true"></i>  Clear</button>
+    </form>
+
+
+    <table style="margin-top:10px" class="table table-bordered table-hover">
+
+        <thead>
+        <tr>
+            <th> Sl No. </th>
+            <th>Rool</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Department</th>
+            <th style="text-align: center">Edit</th>
+            <th style="text-align: center">Delete</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="student, loop : ${studentList}">
+            <td th:text="${loop.count}"/>
+            <td th:text="${student.roll}"/>
+            <td th:text="${student.name}"/>
+            <td th:text="${student.address}"/>
+            <td th:text="${student.department}"/>
+            <td style="text-align: center">
+                <button class="btn btn-info" data-toggle="modal" th:data-target="'#myModal'+${student.id}"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </button>
+            </td>
+
+            <!-- Update Student Information  -->
+            <div class="modal fade" th:id="'myModal'+${student.id}">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Update Student Info</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <form action="update" method="post">
+                        <div class="modal-body">
+                            <input type="hidden" name="id" th:value="${student.id}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" required th:value="${student.roll}" name="roll" placeholder="Enter Roll No.">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" required name="name"
+                                               placeholder="Enter Student Name" th:value="${student.name}" >
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" required name="address" th:value="${student.address}" placeholder="Enter Address">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" required name="dept" placeholder="Enter Department" th:value="${student.department}"  />
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success" >Update</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <td style="text-align: center">
+                <a class="btn btn-danger" th:href="@{delete(id=${student.id})}"> <i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a>
+            </td>
+
+        </tr>
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+</body>
+</html>
